@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <title>Joe's Hotdogs</title>
+  </head>
+
+  <body>
+    <div class="banner">
+      <div class="banner-links">
+      </div>
+      <a class="banner-title" href="./index.html">Joe's Hotdog Stand</a>
+    </div>
+
+    <div class="customer-order">
+        <form>
+          
+          <div class="form-element">
+            <p class="input_question">How many Hotdogs do you want?</p>
+            <input class="bar" type="text" name="number_of_hotdogs" id="hotdogs"/>
+          </div>
+
+          <div class="form-element">
+            <p class="input_question">How many Fries do you want?</p>
+            <input class="bar" type="text" name="number_of_fries" id="fries"/>
+          </div>
+
+          <div class="form-element">
+            <p class="input_question">How many Sodas do you want?</p>
+            <input class="bar" type="text" name="number_of_fries" id="sodas"/>
+          </div>
+
+          <br>
+          <br>
+          
+          <div class="order_summary">
+            <p>Order Summary</p>
+          </div>
+
+          <table>
+            <tr>
+              <th>Item</th>
+              <th>Quantity/Price</th>
+            </tr>
+
+            <tr>
+              <td>Total Hotdogs</td>
+              <td>
+                <p class="final_order amount" id="total_hot_dogs"></p>
+              </td>
+            </tr>
+
+            <tr>
+              <td>Total Cost of Hotdogs</td>
+              <td>
+                <p class="final_order cost" id="total_cost_of_hot_dogs"></p>
+              </td>
+            </tr>
+
+            <tr>
+              <td>Total Fries</td>
+              <td>
+                <p class="final_order amount" id="total_fries"></p>
+              </td>
+            </tr>
+
+            <tr>
+              <td>Total Cost of Fries</td>
+              <td>
+                <p class="final_order cost" id="total_cost_of_fries"></p>
+              </td>
+            </tr>
+
+            <tr>
+              <td>Total Sodas</td>
+              <td>
+                <p class="final_order amount" id="total_sodas"></p>
+              </td>
+            </tr>
+
+            <tr>
+              <td>Total Cost of Sodas</td>
+              <td>
+                <p class="final_order cost" id="total_cost_of_sodas"></p>
+              </td>
+            </tr>
+
+
+            <tr>
+              <td>Subtotal Before Discount</td>
+              <td>
+                <p class="final_order cost" id="subtotal_before_discount"></p>
+              </td>
+            </tr>
+
+            <tr>
+              <td>Discount</td>
+              <td>
+                <p class="final_order discount" id="discount"></p>
+              </td>
+            </tr>
+
+            <tr>
+              <td>Subtotal After Discount</td>
+              <td>
+                <p class="final_order cost" id="subtotal_after_discount"></p>
+              </td>
+            </tr>
+
+            <tr>
+              <td>Tax Amount</td>
+              <td>
+                <p class="final_order cost" id="tax_amount"></p>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="final_total">Final Total</td>
+              <td>
+                <p class="final_order final_total cost" id="final_total_amount"></p>
+              </td>
+            </tr>
+
+          </table>
+
+
+        </form>
+      </div>
+
+      script>
+        const PRICEOFDOGS = 4.80;
+        const PRICEOFFRIES = 3.95;
+        const PRICEOFSODAS = 1.99;
+
+        window.onload = function() {
+            const numDogs = prompt("How many Hotdogs do you want?");
+            const numFries = prompt("How many Fries do you want?");
+            const numSodas = prompt("How many sodas do you want?");
+
+            document.getElementById("hotdogs").value = numDogs;
+            document.getElementById("fries").value = numFries;
+            document.getElementById("sodas").value = numSodas;
+        
+
+        function showMoney(num) {
+            let updatedNum = Math.round(num * 100) / 100;
+            let decimalExtract = Math.round((updatedNum - (Math.floor(updatedNum))) * 100);
+
+            if (decimalExtract < 10) {
+              decimalExtract = '0' + decimalExtract;
+            }
+
+            let finalNum = Math.floor(updatedNum) + '.' + decimalExtract;
+
+            return finalNum;
+        }
+
+        let subTotal = 0;
+        if (numDogs >= 0 && numFries >= 0 && numSodas >= 0) {
+            subTotal += ((numDogs * PRICEOFDOGS) + (numFries * PRICEOFFRIES) + (numSodas * PRICEOFSODAS));
+        } else {
+            alert("Error. Orders must consist of positive integer values!");
+            return;
+        }
+        subTotal = showMoney(subTotal);
+
+
+        let discountSubtotal = parseFloat(subTotal);
+        let discount = 0;
+        if (discountSubtotal >= 25) {
+            discount = discountSubtotal * .10;
+            discountSubtotal = discountSubtotal - discount;
+        }
+        discountSubtotal = showMoney(discountSubtotal);
+        
+
+        let finalPayment = parseFloat(discountSubtotal);
+        finalTax = showMoney(finalPayment * .0625);
+        finalPayment = finalPayment + (finalPayment * .0625);
+        finalPayment = showMoney(finalPayment);
+
+        document.getElementById("total_hot_dogs").innerHTML =numDogs;
+        document.getElementById("total_cost_of_hot_dogs").innerHTML = '$' + showMoney(numDogs * PRICEOFDOGS);
+        document.getElementById("total_fries").innerHTML = numFries;
+        document.getElementById("total_cost_of_fries").innerHTML = '$' + showMoney(numFries * PRICEOFFRIES);
+        document.getElementById("total_sodas").innerHTML =  + numSodas;
+        document.getElementById("total_cost_of_sodas").innerHTML = '$' + showMoney(numSodas * PRICEOFSODAS);
+        document.getElementById("subtotal_before_discount").innerHTML = '$' + subTotal;
+        document.getElementById("discount").innerHTML = '$' + showMoney(discount);
+        document.getElementById("subtotal_after_discount").innerHTML = '$' + discountSubtotal;
+        document.getElementById("tax_amount").innerHTML = '$' + finalTax;
+        document.getElementById("final_total_amount").innerHTML = '$' + finalPayment;
+    }
+      </script>
+    </div>
+  </body>
+</html>
